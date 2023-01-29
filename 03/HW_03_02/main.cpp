@@ -63,7 +63,7 @@ int main() {
     while (true) {
         cout << "Введите команду ('+', '-', '=' или 'x'): ";
         cin >> command;
-        if (not counter.execute_command(command)) break;
+        if (!counter.execute_command(command)) break;
     }
 
     cout << "До свидания!" << endl;
