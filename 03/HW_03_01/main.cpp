@@ -8,7 +8,7 @@ private:
     double num2;
 
 public:
-    Calculator() {num1 = num2 = 0;}
+    Calculator() {num1 = num2 = 1;}
     // метод должен возвращать результат сложения num1 и num2
     double add() {
         return num1 + num2;
