@@ -1,0 +1,194 @@
+#include <iostream>
+
+
+class CFigure{
+public:
+    CFigure(int nb_sides=0) {this->nb_sides=nb_sides; init_arrays(); fig_name="Фигура"; sum_corners=0;};
+    ~CFigure() {delete [] sides; delete [] corners;};
+    int get_sides_number(){return nb_sides;};
+    void print_info();
+    bool check_corners() {
+        int sum=0;
+        for (int i=0;i<nb_sides;i++) sum += corners[i];
+        return (sum == sum_corners);
+    }
+    virtual void validate() {
+        if (!check_corners()) {
+            std::cout << "Неправильная" << std::endl;
+            return;
+        };
+        std::cout << "Правильная" << std::endl;
+    };
+protected:
+    void init_arrays(){sides = new int[nb_sides]; corners = new int[nb_sides];};
+    std::string fig_name;
+    int sum_corners;
+    int nb_sides;
+    int* sides;
+    int* corners;
+};
+
+void CFigure::print_info() {
+    std::cout << fig_name << std::endl;
+    validate();
+    std::cout << "Количество сторон: " << nb_sides << std::endl;
+    if (nb_sides==0) return;
+    std::cout << "Стороны:";
+    for (int i=0;i<nb_sides;i++){
+        std::cout << " " << char(97+i) << "=" << sides[i];
+    }
+    std::cout << std::endl;
+    std::cout << "Углы:";
+    for (int i=0;i<nb_sides;i++){
+        std::cout << " " << char(65+i) << "=" << corners[i];
+    }
+    std::cout << std::endl;
+}
+
+class CTriangle : public CFigure{
+public:
+    CTriangle(int a, int b, int c, int A, int B, int C) : CFigure(3) {
+        sides[0]=a;
+        sides[1]=b;
+        sides[2]=c;
+        corners[0]=A;
+        corners[1]=B;
+        corners[2]=C;
+        fig_name="Треугольник";
+        sum_corners=180;
+    };
+};
+
+//прямоугольный треугольник (угол C всегда равен 90);
+class CSquareTriangle : public CTriangle{
+public:
+    CSquareTriangle(int a, int b, int c, int A, int B) : CTriangle(a,b,c,A,B,90) {
+        fig_name="Прямоугольный треугольник";
+    };
+};
+
+// равнобедренный треугольник (стороны a и c равны, углы A и C равны);
+class CIsoscelesTriangle : public CTriangle{
+public:
+    CIsoscelesTriangle(int a, int b, int A, int B) : CTriangle(a,b,a,A,B,A)  {
+        fig_name="Равнобедренный треугольник";
+    };
+};
+
+// равносторонний треугольник (все стороны равны, все углы равны 60);
+class CEquilateralTriangle : public CTriangle{
+public:
+    CEquilateralTriangle(int a) : CTriangle(a,a,a,60,60,60)  {
+        fig_name="Равносторонний треугольник";
+    };
+};
+
+
+class CQuadrilateral : public CFigure{
+public:
+    CQuadrilateral(int a, int b, int c, int d, int A, int B, int C, int D) : CFigure(4) {
+        sides[0]=a;
+        sides[1]=b;
+        sides[2]=c;
+        sides[3]=d;
+        corners[0]=A;
+        corners[1]=B;
+        corners[2]=C;
+        corners[3]=D;
+        fig_name="Четырёхугольник";
+        sum_corners=360;
+    };
+};
+
+// - прямоугольник (стороны a,c и b,d попарно равны, все углы равны 90);
+class CRectangle : public CQuadrilateral {
+public:
+    CRectangle(int a, int b) : CQuadrilateral(a, b, a, b, 90, 90, 90, 90) {
+        fig_name="Прямоугольник";
+    };
+};
+
+// - квадрат (все стороны равны, все углы равны 90);
+class CSquare : public CRectangle {
+public:
+    CSquare(int a) : CRectangle(a, a) {
+        fig_name="Квадрат";
+    };
+};
+
+// - параллелограмм (стороны a,c и b,d попарно равны, углы A,C и B,D попарно равны);
+class CParallelogram : public CQuadrilateral {
+public:
+    CParallelogram(int a, int b, int A, int B) : CQuadrilateral(a, b, a, b, A, B, A, B) {
+        fig_name="Параллелограмм";
+    };
+};
+
+// - ромб (все стороны равны, углы A,C и B,D попарно равны).
+class CRhombus : public CQuadrilateral {
+public:
+    CRhombus(int a, int A, int B) : CQuadrilateral(a, a, a, a, A, B, A, B) {
+        fig_name="Ромб";
+    };
+};
+
+
+
+int main() {
+    // указаталь на базовый класс
+    CFigure* fig = new CFigure();
+    fig->print_info();
+    std::cout << std::endl;
+
+    // фигуры с 3 сторонами
+    auto triangle = CTriangle(10,20,30,50,60, 70);
+    auto square_triangle = CSquareTriangle(10,20,30,50,60);
+    auto isosceles = CIsoscelesTriangle(10,20,50,60);
+    auto equilateral = CEquilateralTriangle(30);
+
+    fig = &triangle;
+    fig->print_info();
+    std::cout << std::endl;
+
+    fig = &square_triangle;
+    fig->print_info();
+    std::cout << std::endl;
+
+    fig = &isosceles;
+    fig->print_info();
+    std::cout << std::endl;
+
+    fig = &equilateral;
+    fig->print_info();
+    std::cout << std::endl;
+
+
+    // фигуры с 4 сторонами
+    auto quadrilateral = CQuadrilateral(10, 20, 30, 40, 50 ,60, 70, 80);
+    auto rectangle = CRectangle(10, 20);
+    auto square = CSquare(20);
+    auto parallelogram = CParallelogram(20, 30, 30, 40);
+    auto rhombus = CRhombus(30, 30, 40);
+
+    fig = &quadrilateral;
+    fig->print_info();
+    std::cout << std::endl;
+
+    fig = &rectangle;
+    fig->print_info();
+    std::cout << std::endl;
+
+    fig = &square;
+    fig->print_info();
+    std::cout << std::endl;
+
+    fig = &parallelogram;
+    fig->print_info();
+    std::cout << std::endl;
+
+    fig = &rhombus;
+    fig->print_info();
+    std::cout << std::endl;
+
+    return 0;
+}
