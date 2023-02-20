@@ -35,25 +35,25 @@ std::ostream& operator<<(std::ostream& out, const Fraction& f){
 }
 
 Fraction Fraction::operator+(const Fraction& rhs) const{
-    auto temp = Fraction(numerator_ * rhs.getDenominator() + rhs.getNumerator() * denominator_, denominator_ * rhs.getDenominator());
+    auto temp = Fraction(numerator_ * rhs.denominator_ + rhs.numerator_ * denominator_, denominator_ * rhs.denominator_);
     temp.reduce_fraction();
     return temp;
 }
 
 Fraction Fraction::operator-(const Fraction& rhs) const{
-    auto temp = Fraction(numerator_ * rhs.getDenominator() - rhs.getNumerator() * denominator_, denominator_ * rhs.getDenominator());
+    auto temp = Fraction(numerator_ * rhs.denominator_ - rhs.numerator_ * denominator_, denominator_ * rhs.denominator_);
     temp.reduce_fraction();
     return temp;
 }
 
 Fraction Fraction::operator*(const Fraction& rhs) const{
-    auto temp = Fraction(numerator_ * rhs.getNumerator(), denominator_ * rhs.getDenominator());
+    auto temp = Fraction(numerator_ * rhs.numerator_, denominator_ * rhs.denominator_);
     temp.reduce_fraction();
     return temp;
 }
 
 Fraction Fraction::operator/(const Fraction& rhs) const{
-    auto temp = Fraction(numerator_ * rhs.getDenominator(), denominator_ * rhs.getNumerator());
+    auto temp = Fraction(numerator_ * rhs.denominator_, denominator_ * rhs.numerator_);
     temp.reduce_fraction();
     return temp;
 }
@@ -85,14 +85,14 @@ Fraction Fraction::operator--(int){
 }
 
 bool Fraction::operator==(const Fraction& rhs) const{
-    return numerator_ == rhs.getNumerator() && denominator_ == rhs.getDenominator();
+    return numerator_ == rhs.numerator_ && denominator_ == rhs.denominator_;
 }
 
 bool Fraction::operator!=(const Fraction& rhs) const{
     return !(*this == rhs);
 }
 bool Fraction::operator<(const Fraction& rhs) const{
-    return ((float) numerator_ / (float)denominator_) <  ((float) rhs.getDenominator() / (float) rhs.getDenominator());
+    return ((float) numerator_ / (float)denominator_) <  ((float) rhs.numerator_ / (float) rhs.denominator_);
 }
 bool Fraction::operator>(const Fraction& rhs) const{
     return !(*this < rhs) && !(*this == rhs);

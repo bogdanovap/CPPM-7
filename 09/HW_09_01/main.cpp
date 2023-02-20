@@ -12,12 +12,10 @@ public:
         numerator_ = numerator;
         denominator_ = denominator;
     }
-    int getNumerator() const { return numerator_; }
-    int getDenominator() const { return denominator_; }
 
     bool operator==(const Fraction& rhs) const
     {
-        return numerator_ == rhs.getNumerator() && denominator_ == rhs.getDenominator();
+        return numerator_ == rhs.numerator_ && denominator_ == rhs.denominator_;
     }
     bool operator!=(const Fraction& rhs) const
     {
@@ -25,7 +23,7 @@ public:
     }
     bool operator<(const Fraction& rhs) const
     {
-        return ((float) numerator_ / (float)denominator_) <  ((float) rhs.getDenominator() / (float) rhs.getDenominator());
+        return ((float) numerator_ / (float)denominator_) <  ((float) rhs.numerator_ / (float) rhs.denominator_);
     }
     bool operator>(const Fraction& rhs) const
     {

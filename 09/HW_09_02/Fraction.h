@@ -13,8 +13,6 @@ private:
     int get_nod(int a, int b);
 public:
     Fraction(int numerator, int denominator);
-    int getNumerator() const { return numerator_; }
-    int getDenominator() const { return denominator_; }
     void reduce_fraction();
 
     friend std::ostream& operator<<(std::ostream& out, const Fraction& f);
