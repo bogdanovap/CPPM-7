@@ -85,7 +85,7 @@ Fraction Fraction::operator--(int){
 }
 
 bool Fraction::operator==(const Fraction& rhs) const{
-    return numerator_ == rhs.numerator_ && denominator_ == rhs.denominator_;
+    return numerator_ * rhs.denominator_ ==  denominator_ * rhs.numerator_;
 }
 
 bool Fraction::operator!=(const Fraction& rhs) const{
